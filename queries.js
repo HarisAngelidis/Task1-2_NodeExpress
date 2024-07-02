@@ -36,15 +36,15 @@ function SelectUserById(id) {
 }
 
 //prosthiki xrhsth
-function AddUser(id, lastname, firstname, age, dateofbirth) {
+function AddUser(lastname, firstname, age, dateofbirth) {
     return new Promise((resolve, reject) => {
-        const query = `INSERT INTO Users (UserId, LastName, FirstName, Age, DateOfBirth) VALUES (?, ?, ?, ?, ?)`;
-        const values = [id, lastname, firstname, age, dateofbirth];
+        const query = `INSERT INTO Users (LastName, FirstName, Age, DateOfBirth) VALUES (?, ?, ?, ?)`;
+        const values = [lastname, firstname, age, dateofbirth];
         con.query(query, values, function (err, result) {
             if (err) {
                 reject(err);
             } else {
-                resolve(result);
+                resolve(result.insertId);
             }
         });
     });
