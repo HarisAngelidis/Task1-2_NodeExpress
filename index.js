@@ -57,29 +57,22 @@ app.use(bodyParser.json());
 app.post('/add/user', async (req, res) => {
   try {
    
-      const id = req.body.UserID;
+    
       const LastName = req.body.LastName;
 
-    //an den exei symplhrothei id h/kai epitheto
-    if(!id || !LastName ){
+    //an den exei symplhrothei epitheto
+    if(!LastName ){
       console.log("d");
-      res.status(400).json({ msg: `The new user must have an id and a last name`});
+      res.status(400).json({ msg: `The new user must have a last name`});
       return;}  
 
       const FirstName = req.body.FirstName;
       const Age = req.body.Age;
       const DOB = req.body.DateOfBirth;
 
-      //an yparxei hdh o xrhsths
-      const result = await SelectUserById(id);
-
-     if(result.length>0){
-        res.status(400).json({ msg: `A user with that id already exists`});}
-
-        else{
-
-     await AddUser(id, LastName, FirstName, Age, DOB);
-      res.status(200).json({ msg: 'User added' });}
+  
+     await AddUser(LastName, FirstName, Age, DOB);
+      res.status(200).json({ msg: 'User added' });
   } catch (err) {
     
       res.status(500).json({ msg: 'Something went wrong' });
@@ -158,32 +151,26 @@ app.delete('/users/:id', async (req, res) => {
   app.post('/add/userRole', async (req, res) => {
     try {
    
-      const id = req.body.UserID;
+    
       const LastName = req.body.LastName;
       const Role = req.body.Role;
 
     //an den exei symplhrosei ta aparaithta pedia
-    if(!id || !LastName ){
+    if(!LastName || !Role){
       console.log("d");
-      res.status(400).json({ msg: `The new user must have an id,a last name and a role`});
+      res.status(400).json({ msg: `The new user must have a last name and a role`});
       return;}  
 
       const FirstName = req.body.FirstName;
       const Age = req.body.Age;
       const DOB = req.body.DateOfBirth;
 
-      //an yparxei hdh o xrhsths
-      const result = await SelectUserById(id);
+     
+     const id = await AddUser(LastName, FirstName, Age, DOB);
 
-     if(result.length>0){
-        res.status(400).json({ msg: `A user with that id already exists`});}
-
-        else{
-
-     await AddUser(id, LastName, FirstName, Age, DOB);
      await AddUserRole(id, Role);
 
-      res.status(200).json({ msg: 'User added' });}
+      res.status(200).json({ msg: 'User added' });
   } catch (err) {
     
       res.status(500).json({ msg: 'Something went wrong' });
@@ -206,7 +193,7 @@ app.delete('/users/:id', async (req, res) => {
          return;}
         
         await UpdateUserRole(id, Role);
-        res.status(200).json({ msg: 'User updated' });
+        res.status(200).json({ msg: 'Role updated' });
     } catch (err) {
         
         res.status(500).json({ msg: 'Something went wrong' });
