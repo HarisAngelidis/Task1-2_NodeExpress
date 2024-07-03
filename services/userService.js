@@ -1,5 +1,6 @@
 const  {queryDatabase }= require('../database/database-calls');
 
+
 function getAllUsers() {
     return queryDatabase("SELECT * FROM Users", []);
 }
@@ -8,15 +9,15 @@ function getUserById(id) {
     return queryDatabase("SELECT * FROM Users WHERE UserId = ?", [id]);
 }
 
-function addUser(lastname, firstname, age, dateofbirth) {
-    const query = `INSERT INTO Users (LastName, FirstName, Age, DateOfBirth) VALUES (?, ?, ?, ?)`;
-    const values = [lastname, firstname, age, dateofbirth];
+function addUser(lastname, firstname, age, dateofbirth,RoleId) {
+    const query = `INSERT INTO Users (LastName, FirstName, Age, DateOfBirth,RoleId) VALUES (?, ?, ?, ?, ?)`;
+    const values = [lastname, firstname, age, dateofbirth,RoleId];
     return queryDatabase(query, values).then(result => result.insertId);
 }
 
-function updateUser(id, lastname, firstname, age, dateofbirth) {
-    const query = `UPDATE Users SET LastName = ?, FirstName = ?, Age = ?, DateOfBirth = ? WHERE UserId = ?`;
-    const values = [lastname, firstname, age, dateofbirth, id];
+function updateUser(id, lastname, firstname, age, dateofbirth,RoleId) {
+    const query = `UPDATE Users SET LastName = ?, FirstName = ?, Age = ?, DateOfBirth = ?, RoleId=? WHERE UserId = ?`;
+    const values = [lastname, firstname, age, dateofbirth, RoleId, id];
     return queryDatabase(query, values);
 }
 

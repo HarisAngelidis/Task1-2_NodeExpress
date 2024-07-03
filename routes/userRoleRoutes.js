@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const userRoleController = require('../controllers/userRoleController');
+const path = '/api/userRole';
 
-router.get('/userRole', userRoleController.getAllUserRoles);
-router.post('/add/userRole', userRoleController.addUserRole);
-router.put('/update/userRole/:id', userRoleController.updateUserRole);
-router.get('/admins', userRoleController.getAdmins);
-router.get('/users/byDate/:Apo/:Mexri/:Rolos', userRoleController.getUsersByDateRole);
+router.get(path, userRoleController.getAllUserRoles);
+//router.post(path, userRoleController.addUserRole);
+router.get(path + '/:role/byDate', userRoleController.getUsersByDateRole);
+router.put(path + '/:id', userRoleController.updateUserRole);
+router.get(path + '/admins', userRoleController.getAdmins);
+
 
 module.exports = router;

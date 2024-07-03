@@ -4,13 +4,17 @@ const userService = require('../services/userService');
 async function getAllUserRoles(req, res) {
     try {
         const result = await userRoleService.getAllUserRoles();
-        res.json(result);
+        res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
     }
 }
 
-async function addUserRole(req, res) {
+
+
+
+
+/*async function addUserRole(req, res) {
     try {
         const { LastName, Role, FirstName, Age, DateOfBirth } = req.body;
         if (!LastName || !Role) {
@@ -23,18 +27,27 @@ async function addUserRole(req, res) {
     } catch (err) {
         res.status(500).json({ msg: 'Something went wrong' });
     }
-}
+}*/
 
 async function updateUserRole(req, res) {
     const id = parseInt(req.params.id);
-    const { Role } = req.body;
+    const  RoleId  = req.body.RoleId;
+
+    const exists = await userRoleService.getUserRoleById(RoleId);
+      
+    if(!exists.length>0){
+        res.status(400).json({ msg: `The role id does not exist` });
+        return;
+    }
     try {
-        const result = await userRoleService.getUserRoleById(id);
+        const result = await userService.getUserById(id);
+        console.log(result);
         if (!result.length) {
             res.status(400).json({ msg: `A user with that id does not exist` });
         } else {
-            await userRoleService.updateUserRole(id, Role);
-            res.status(200).json({ msg: 'Role updated' });
+            console.log(id,RoleId);
+            await userRoleService.updateUserRole(id, RoleId);
+            res.status(200).json({ msg: 'RoleId updated' });
         }
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
@@ -44,14 +57,18 @@ async function updateUserRole(req, res) {
 async function getAdmins(req, res) {
     try {
         const result = await userRoleService.getAdmins();
-        res.json(result);
+        res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
     }
 }
 
 async function getUsersByDateRole(req, res) {
-    const { Apo, Mexri, Rolos } = req.params;
+    const  Rolos  = req.params.role;
+
+    const Apo = req.query.Apo;
+    const Mexri = req.query.Mexri;
+
     try {
         const result = await userRoleService.getUsersByDateRole(Apo, Mexri, Rolos);
         res.status(200).json(result);
@@ -62,8 +79,9 @@ async function getUsersByDateRole(req, res) {
 
 module.exports = {
     getAllUserRoles,
-    addUserRole,
+    //addUserRole,
     updateUserRole,
     getAdmins,
-    getUsersByDateRole
+    getUsersByDateRole,
+  
 };

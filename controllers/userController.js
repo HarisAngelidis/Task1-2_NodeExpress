@@ -1,9 +1,10 @@
 const userService = require('../services/userService');
+const userRoleService = require('../services/userRoleService');
 
 async function getAllUsers(req, res) {
     try {
         const result = await userService.getAllUsers();
-        res.json(result);
+        res.status(200).json({ result});
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong`});
     }
@@ -16,7 +17,7 @@ async function getUserById(req, res) {
         if (!result.length) {
             res.status(400).json({ msg: `A user with that id does not exist` });
         } else {
-            res.json(result);
+            res.status(200).json(result);
         }
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
@@ -25,12 +26,24 @@ async function getUserById(req, res) {
 
 async function addUser(req, res) {
     try {
-        const { LastName, FirstName, Age, DateOfBirth } = req.body;
-        if (!LastName) {
-            res.status(400).json({ msg: `The new user must have a last name` });
+        const { LastName, FirstName, Age, DateOfBirth, RoleId} = req.body;
+        
+        if (!LastName || !RoleId) {
+            res.status(400).json({ msg: `The new user must have a last name and a role id` });
             return;
         }
-        await userService.addUser(LastName, FirstName, Age, DateOfBirth);
+
+        
+        const exists = await userRoleService.getUserRoleById(RoleId);
+
+        console.log(exists);
+      
+        if(!exists.length>0){
+            res.status(400).json({ msg: `The role id does not exist` });
+            return;
+        }
+        
+        await userService.addUser(LastName, FirstName, Age, DateOfBirth,RoleId);
         res.status(200).json({ msg: 'User added' });
     } catch (err) {
         res.status(500).json({ msg: 'Something went wrong' });
@@ -39,13 +52,25 @@ async function addUser(req, res) {
 
 async function updateUser(req, res) {
     const id = parseInt(req.params.id);
-    const { LastName, FirstName, Age, DateOfBirth } = req.body;
+    const { LastName, FirstName, Age, DateOfBirth,RoleId } = req.body;
+
+    if (!LastName || !RoleId) {
+        res.status(400).json({ msg: `The updated user must have a last name and a role id` });
+        return;
+    }
+    const exists = await userRoleService.getUserRoleById(RoleId);
+   
+    if(!exists.length>0){
+        res.status(400).json({ msg: `The role id does not exist` });
+        return;
+    }
+
     try {
         const result = await userService.getUserById(id);
         if (!result.length) {
             res.status(400).json({ msg: `A user with that id does not exist` });
         } else {
-            await userService.updateUser(id, LastName, FirstName, Age, DateOfBirth);
+            await userService.updateUser(id, LastName, FirstName, Age, DateOfBirth,RoleId);
             res.status(200).json({ msg: 'User updated' });
         }
     } catch (err) {
@@ -61,7 +86,7 @@ async function deleteUser(req, res) {
             res.status(400).json({ msg: `A user with that id does not exist` });
         } else {
             await userService.deleteUser(id);
-            res.json({ msg: 'User deleted' });
+            res.status(200).json({ msg: 'User deleted' });
         }
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
@@ -69,14 +94,18 @@ async function deleteUser(req, res) {
 }
 
 async function getUsersByDate(req, res) {
-    const { Apo, Mexri } = req.params;
+
+    console.log("d");
+    const Apo = req.query.Apo;
+    const Mexri = req.query.Mexri;
+
+    console.log(`Apo: ${Apo}, Mexri: ${Mexri}`);
     try {
         const result = await userService.getUsersByDate(Apo, Mexri);
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ msg: `Something went wrong` });
-    }
-}
+    }}
 
 module.exports = {
     getAllUsers,
