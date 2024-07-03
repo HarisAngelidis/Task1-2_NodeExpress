@@ -28,8 +28,11 @@ CREATE TABLE `Users` (
   `FirstName` varchar(255) DEFAULT NULL,
   `Age` int DEFAULT NULL,
   `DateOfBirth` date DEFAULT NULL,
-  PRIMARY KEY (`Userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `RoleId` int DEFAULT NULL,
+  PRIMARY KEY (`Userid`),
+  KEY `userRole_idx` (`RoleId`),
+  CONSTRAINT `userRole` FOREIGN KEY (`RoleId`) REFERENCES `userrole` (`RoleId`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +41,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,'Papadopoulos','Kostas',34,'1990-02-06'),(2,'Konstantinidou','Maria',24,'2000-03-08'),(3,'georgatos','anaksimandros',21,'2003-08-13'),(4,'sergopoulos','thanasis',21,'2003-08-13'),(29,'Papadopouloss','Kostass',34,'1990-02-05');
+INSERT INTO `Users` VALUES (1,'Papadopoulos','Kostas',24,'1999-12-31',1),(2,'Tsipras','Alexis',50,'1974-01-01',2),(3,'georgatos','anaksimandros',21,'2003-08-13',3);
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-02 13:01:10
+-- Dump completed on 2024-07-03 13:25:33

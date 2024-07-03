@@ -23,11 +23,9 @@ DROP TABLE IF EXISTS `userrole`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `userrole` (
-  `UserID` int NOT NULL,
+  `RoleId` int NOT NULL,
   `Role` varchar(255) NOT NULL,
-  PRIMARY KEY (`UserID`),
-  CONSTRAINT `userrole_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `users` (`Userid`) ON DELETE CASCADE,
-  CONSTRAINT `userrole_ibfk_3` FOREIGN KEY (`UserID`) REFERENCES `users` (`Userid`) ON DELETE CASCADE
+  PRIMARY KEY (`RoleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -37,7 +35,7 @@ CREATE TABLE `userrole` (
 
 LOCK TABLES `userrole` WRITE;
 /*!40000 ALTER TABLE `userrole` DISABLE KEYS */;
-INSERT INTO `userrole` VALUES (1,'Administrator'),(2,'Moderator'),(3,'Regular'),(4,'Administrator'),(29,'regular');
+INSERT INTO `userrole` VALUES (1,'Administrator'),(2,'Moderator'),(3,'Regular');
 /*!40000 ALTER TABLE `userrole` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-02 13:01:10
+-- Dump completed on 2024-07-03 13:25:33
