@@ -2,10 +2,19 @@ const userService = require('../services/userService');
 const userRoleService = require('../services/userRoleService');
 
 async function getAllUsers(req, res) {
+
+   role = req.params.role ;
+
+   flag = true;
+
+   if(!role) {flag = false;}
+
     try {
-        const result = await userService.getAllUsers();
-        res.status(200).json({ result});
-    } catch (err) {
+    
+        const result = await userService.getAllUsers(flag,role);
+        res.status(200).json({ result});}
+    
+     catch (err) {
         res.status(500).json({ msg: `Something went wrong`});
     }
 }
@@ -36,7 +45,7 @@ async function addUser(req, res) {
         
         const exists = await userRoleService.getUserRoleById(RoleId);
 
-        console.log(exists);
+      
       
         if(!exists.length>0){
             res.status(400).json({ msg: `The role id does not exist` });
@@ -95,11 +104,11 @@ async function deleteUser(req, res) {
 
 async function getUsersByDate(req, res) {
 
-    console.log("d");
+   
     const Apo = req.query.Apo;
     const Mexri = req.query.Mexri;
 
-    console.log(`Apo: ${Apo}, Mexri: ${Mexri}`);
+  
     try {
         const result = await userService.getUsersByDate(Apo, Mexri);
         res.status(200).json(result);

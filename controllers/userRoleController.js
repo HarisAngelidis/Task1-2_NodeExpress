@@ -41,11 +41,11 @@ async function updateUserRole(req, res) {
     }
     try {
         const result = await userService.getUserById(id);
-        console.log(result);
+       
         if (!result.length) {
             res.status(400).json({ msg: `A user with that id does not exist` });
         } else {
-            console.log(id,RoleId);
+         
             await userRoleService.updateUserRole(id, RoleId);
             res.status(200).json({ msg: 'RoleId updated' });
         }
